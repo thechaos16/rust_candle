@@ -1,4 +1,5 @@
 use candle_core::{Device, Result, Tensor};
+use candle_nn;
 
 struct Model {
     first: Tensor,
@@ -26,5 +27,8 @@ fn main() -> Result<()> {
     let digit = model.forward(&dummy_image)?;
     println!("Digit {digit:?} digit");
     println!("{:?}", digit.to_vec2::<f32>());
+    println!("{:?}", candle_nn::ops::softmax(&digit, 1)?.to_vec2::<f32>());
+    let softmax_res = candle_nn::ops::softmax(&digit, 1)?;
+    println!("{:?}", softmax_res.argmax(1));
     Ok(())
 }
